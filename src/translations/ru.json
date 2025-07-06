@@ -1,0 +1,54 @@
+{
+  "home": {
+    "buttons": {
+      "calculate": "Рассчитать",
+      "send_route": "Отправить маршрут",
+      "create": "Создать маршрут",
+      "adjust": "Изменить маршрут",
+      "loading": "Пожалуйста, подождите"
+    },
+    "errors": {
+      "departure_required_error": "Выберите точку отправления",
+      "destination_required_error": "Выберите точку назначения",
+      "different_points": "Точки отправления и назначения должны быть разными",
+      "invalid_weight": "Пожалуйста, введите корректный вес",
+      "invalid_fuel": "Пожалуйста, введите корректный объем топлива",
+      "valid": "Введите корректный адрес"
+    },
+    "input_fields": {
+      "find_unit_placeholder": "Поиск по номеру юнита",
+      "departure_placeholder": "Место отправления",
+      "destination_placeholder": "Пункт назначения",
+      "weight": "Вес",
+      "weight_placeholder": "Введите вес"
+    },
+    "headings": {
+      "driver_info": "Информация о водителе",
+      "route_info": "Информация о маршруте",
+      "details_info": "Детали заправки"
+    },
+    "status": {
+      "active": "В дороге",
+      "inactive": "Неактивен",
+      "idle": "Холостой ход"
+    },
+    "driver_info": {
+      "fuel": "Топливо",
+      "bonus": "Бонусы",
+      "unit_number": "Номер юнита",
+      "truck": "Тягач"
+    },
+    "details_info": {
+      "no_gas_stations": "Нет запланированных заправок",
+      "gallons": "Галлоны",
+      "adress": "Адрес",
+      "miles_next": "миль до следующей",
+      "stop_order": "Порядок остановки",
+      "price": "Цена",
+      "save": "Сохранить"
+    },
+    "trucks": {
+      "no_trucks_found": "По вашему запросу траки не найдены"
+    }
+  }
+}

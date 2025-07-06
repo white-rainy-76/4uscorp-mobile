@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "fouruscorp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
@@ -16,7 +15,13 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.whiterainy.fouruscorp",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -33,10 +38,36 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow 4uscorp to use your location."
+        }
+      ],
+      [
+        "react-native-maps",
+        {
+          "iosGoogleMapsApiKey": "AIzaSyCq9ygETQJ-8eStWqHUa-XvF1ihD32NyDU",
+          "androidGoogleMapsApiKey": "AIzaSyCq9ygETQJ-8eStWqHUa-XvF1ihD32NyDU"
+        }
       ]
     ],
     "experiments": {
-      "typedRoutes": true
-    }
+      "typedRoutes": true,
+      "ios": {
+        "newArchEnabled": true
+      },
+      "android": {
+        "newArchEnabled": true
+      }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5c646a10-62f0-46cc-8c0c-bd6437ce85e9"
+      }
+    },
+    "owner": "whiterainy"
   }
 }
