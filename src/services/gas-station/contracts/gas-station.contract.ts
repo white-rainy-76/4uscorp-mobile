@@ -6,6 +6,11 @@ export const FuelPriceSchema = z.object({
   finalPrice: z.string().optional(),
 })
 
+export const FuelPlanSchema = z.object({
+  routeSectionId: z.string(),
+  fuelPlanId: z.string(),
+})
+
 export const GasStationSchema = z.object({
   id: z.string(),
   name: z.string().nullable(),
@@ -15,13 +20,13 @@ export const GasStationSchema = z.object({
   }),
   address: z.string().nullable().optional(),
   fuelPrice: FuelPriceSchema.optional(),
-  // New fields from the DTO
   isAlgorithm: z.boolean().nullable().optional(),
   refill: z.string().nullable().optional(),
   stopOrder: z.number().nullable().optional(),
   nextDistanceKm: z.number().nullable().optional(),
   roadSectionId: z.string(),
   fuelLeftBeforeRefill: z.number().nullable().optional(),
+  fuelPlans: z.array(FuelPlanSchema).nullable().optional(),
   // Fields from old contract that might still be relevant
   state: z.string().nullable().optional(),
   distanceToLocation: z.number().nullable().optional(),

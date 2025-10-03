@@ -1,7 +1,7 @@
 import { translate, TxKeyPath } from '@/shared/lib/i18n'
 import React from 'react'
 import type { TextProps, TextStyle } from 'react-native'
-import { I18nManager, StyleSheet, Text as NNText } from 'react-native'
+import { I18nManager, Text as NNText, StyleSheet } from 'react-native'
 import { twMerge } from 'tailwind-merge'
 
 interface Props extends TextProps {

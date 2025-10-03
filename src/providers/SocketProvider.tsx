@@ -1,32 +1,26 @@
+'use client'
+
+import signalRService from '@/services/socket/signalRService'
 import { connectionContext } from '@/shared/context/socket-context'
 import {
   HttpTransportType,
   HubConnection,
   HubConnectionBuilder,
-  HubConnectionState,
 } from '@microsoft/signalr'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [connection, setConnection] = useState<HubConnection | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const connectionRef = useRef<HubConnection | null>(null)
-
   const serverUrl = 'https://foruscorp.net:5011'
 
   useEffect(() => {
     const connect = async () => {
-      if (
-        connectionRef.current &&
-        connectionRef.current.state === HubConnectionState.Connected
-      ) {
-        setIsConnected(true)
-        return
-      }
-
       const newConnection = new HubConnectionBuilder()
         .withUrl(`${serverUrl}/truckstracking-api/truck-tracking`, {
-          transport: HttpTransportType.WebSockets,
+          skipNegotiation: true, // Optional: for same-origin or specific configurations
+          transport: HttpTransportType.WebSockets, // Optional: specify transport
         })
         .withAutomaticReconnect()
         .build()
@@ -34,14 +28,20 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       connectionRef.current = newConnection
       setConnection(newConnection)
 
+      signalRService.setConnection(newConnection)
+
       newConnection.onclose((error) => {
         setIsConnected(false)
-        console.warn('SignalR connection closed:', error)
+        if (error) {
+          console.error('SignalR connection closed with error:', error)
+        } else {
+          console.log('SignalR connection closed.')
+        }
       })
 
       newConnection.onreconnecting((error) => {
         setIsConnected(false)
-        console.info('SignalR connection reconnecting...', error)
+        console.warn('SignalR connection reconnecting...', error)
       })
 
       newConnection.onreconnected((connectionId) => {
@@ -52,7 +52,6 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       try {
         await newConnection.start()
         setIsConnected(true)
-        console.log('SignalR connection started successfully!')
       } catch (err) {
         setIsConnected(false)
         console.error('Error while starting SignalR connection:', err)
@@ -60,15 +59,9 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     }
 
     connect()
-
+    // Clear before unmount
     return () => {
-      if (
-        connectionRef.current &&
-        connectionRef.current.state !== HubConnectionState.Disconnected
-      ) {
-        console.log('Stopping SignalR connection...')
-        connectionRef.current.stop()
-      }
+      connectionRef.current?.stop()
     }
   }, [serverUrl])
 

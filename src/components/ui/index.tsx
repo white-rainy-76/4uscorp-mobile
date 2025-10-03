@@ -1,10 +1,10 @@
 import { cssInterop } from 'nativewind'
 import Svg from 'react-native-svg'
 
+export * from './app-background'
 export * from './button'
 export * from './checkbox'
 export { default as colors } from './colors'
-export * from './focus-aware-status-bar'
 export * from './image'
 export * from './input'
 export * from './list'
@@ -12,6 +12,7 @@ export * from './modal'
 export * from './progress-bar'
 export * from './select'
 export * from './text'
+export * from './themed-stack'
 export * from './utils'
 
 // export base components from react-native

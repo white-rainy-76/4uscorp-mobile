@@ -1,16 +1,28 @@
-import { queryClient } from '@/shared/api/query-client'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { ReactNode } from 'react'
+import { AppBackground } from '@/components/ui'
+import { LanguageProvider } from '@/shared/lib/i18n'
+import { ThemeProvider } from '@/shared/lib/theme'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import React from 'react'
 import { SocketProvider } from './SocketProvider'
 
-interface Props {
-  children: ReactNode
+const queryClient = new QueryClient()
+
+interface AppProvidersProps {
+  children: React.ReactNode
 }
 
-export function AppProviders({ children }: Props) {
+export const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SocketProvider>{children}</SocketProvider>
-    </QueryClientProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <AppBackground>
+          <SocketProvider>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </SocketProvider>
+        </AppBackground>
+      </ThemeProvider>
+    </LanguageProvider>
   )
 }

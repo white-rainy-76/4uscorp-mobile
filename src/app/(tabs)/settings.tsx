@@ -1,173 +1,115 @@
-import { Ionicons } from '@expo/vector-icons'
+import { SettingsItem } from '@/components/settings/setting-item'
+import { SettingsSection } from '@/components/settings/setting-section'
+import { signOut } from '@/shared/lib/auth'
+import { useCurrentLanguage, useTranslation } from '@/shared/lib/i18n'
+import { clearAllStorage } from '@/shared/lib/storage'
+import { useTheme } from '@/shared/lib/theme'
 import { useState } from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Alert, ScrollView } from 'react-native'
 
 export default function SettingsScreen() {
+  const { t } = useTranslation()
+  const { theme, themeMode, toggleTheme } = useTheme()
   const [pushNotifications, setPushNotifications] = useState(true)
   const [locationServices, setLocationServices] = useState(true)
-  const [darkMode, setDarkMode] = useState(false)
+  const { language, toggleLanguage } = useCurrentLanguage()
 
-  const SettingsItem = ({
-    icon,
-    title,
-    value,
-    onPress,
-    showSwitch = false,
-    switchValue,
-    onSwitchChange,
-  }: {
-    icon: string
-    title: string
-    value?: string
-    onPress?: () => void
-    showSwitch?: boolean
-    switchValue?: boolean
-    onSwitchChange?: (value: boolean) => void
-  }) => (
-    <TouchableOpacity style={styles.settingItem} onPress={onPress}>
-      <View style={styles.settingItemLeft}>
-        <Ionicons name={icon as any} size={22} color="#007AFF" />
-        <Text style={styles.settingTitle}>{title}</Text>
-      </View>
-      {showSwitch ? (
-        <Switch
-          value={switchValue}
-          onValueChange={onSwitchChange}
-          trackColor={{ false: '#C7C7CC', true: '#007AFF' }}
-          thumbColor="#FFFFFF"
-        />
-      ) : (
-        <View style={styles.settingItemRight}>
-          {value && <Text style={styles.settingValue}>{value}</Text>}
-          <Ionicons name="chevron-forward" size={16} color="#C7C7CC" />
-        </View>
-      )}
-    </TouchableOpacity>
-  )
+  const handleSignOut = () => {
+    signOut()
+  }
+
+  const handleClearStorage = () => {
+    Alert.alert(
+      'Clear All Data',
+      'This will delete all app data and reset the app to first launch state. Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Clear All',
+          style: 'destructive',
+          onPress: async () => {
+            await clearAllStorage()
+            Alert.alert(
+              'Success',
+              'All data has been cleared. Please restart the app.',
+            )
+          },
+        },
+      ],
+    )
+  }
+
+  const handleLanguageChange = () => {
+    console.log(`Toggling language from ${language}`)
+    toggleLanguage()
+  }
+
+  const getLanguageDisplayName = (lang: string) => {
+    return lang === 'en' ? 'English' : 'Русский'
+  }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Уведомления</Text>
-        <View style={styles.sectionContent}>
-          <SettingsItem
-            icon="notifications-outline"
-            title="Push-уведомления"
-            showSwitch={true}
-            switchValue={pushNotifications}
-            onSwitchChange={setPushNotifications}
-          />
-          <SettingsItem
-            icon="location-outline"
-            title="Службы геолокации"
-            showSwitch={true}
-            switchValue={locationServices}
-            onSwitchChange={setLocationServices}
-          />
-        </View>
-      </View>
+    <ScrollView
+      className="flex-1 pt-[25px]"
+      style={{ backgroundColor: theme.colors.background.primary }}>
+      <SettingsSection title={t('settings.notifications')}>
+        <SettingsItem
+          icon="notifications-outline"
+          title={t('settings.push_notifications')}
+          showSwitch={true}
+          switchValue={pushNotifications}
+          onSwitchChange={setPushNotifications}
+        />
+        <SettingsItem
+          icon="location-outline"
+          title={t('settings.location_services')}
+          showSwitch={true}
+          switchValue={locationServices}
+          onSwitchChange={setLocationServices}
+          isLastItem={true}
+        />
+      </SettingsSection>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Внешний вид</Text>
-        <View style={styles.sectionContent}>
-          <SettingsItem
-            icon="moon-outline"
-            title="Тёмная тема"
-            showSwitch={true}
-            switchValue={darkMode}
-            onSwitchChange={setDarkMode}
-          />
-          <SettingsItem
-            icon="language-outline"
-            title="Язык"
-            value="Русский"
-            onPress={() => console.log('Открыть выбор языка')}
-          />
-        </View>
-      </View>
+      <SettingsSection title={t('settings.appearance')}>
+        <SettingsItem
+          icon="moon-outline"
+          title={t('settings.dark_theme')}
+          showSwitch={true}
+          switchValue={themeMode === 'dark'}
+          onSwitchChange={toggleTheme}
+        />
+        <SettingsItem
+          icon="language-outline"
+          title={t('settings.language')}
+          value={getLanguageDisplayName(language)}
+          onPress={handleLanguageChange}
+          isLastItem={true}
+        />
+      </SettingsSection>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Поддержка</Text>
-        <View style={styles.sectionContent}>
+      <SettingsSection title={t('settings.account')}>
+        <SettingsItem
+          icon="log-out-outline"
+          title={t('settings.sign_out')}
+          onPress={handleSignOut}
+          isSignOut={true}
+          isLastItem={true}
+        />
+      </SettingsSection>
+
+      {__DEV__ && (
+        <SettingsSection title="Development">
           <SettingsItem
-            icon="help-circle-outline"
-            title="Справка"
-            onPress={() => console.log('Открыть справку')}
+            icon="trash-outline"
+            title="Clear All Data"
+            onPress={handleClearStorage}
+            isLastItem={true}
           />
-          <SettingsItem
-            icon="chatbubble-outline"
-            title="Обратная связь"
-            onPress={() => console.log('Открыть обратную связь')}
-          />
-          <SettingsItem
-            icon="information-circle-outline"
-            title="О приложении"
-            value="v1.0.0"
-            onPress={() => console.log('Открыть информацию о приложении')}
-          />
-        </View>
-      </View>
+        </SettingsSection>
+      )}
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8F9FA',
-    marginTop: 25,
-  },
-  section: {
-    marginBottom: 30,
-  },
-  sectionTitle: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#8E8E93',
-    textTransform: 'uppercase',
-    marginBottom: 8,
-    marginHorizontal: 20,
-  },
-  sectionContent: {
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderTopColor: '#E1E1E1',
-    borderBottomColor: '#E1E1E1',
-  },
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E1E1E1',
-  },
-  settingItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 16,
-    color: '#000000',
-    marginLeft: 15,
-  },
-  settingItemRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  settingValue: {
-    fontSize: 16,
-    color: '#8E8E93',
-    marginRight: 8,
-  },
-})

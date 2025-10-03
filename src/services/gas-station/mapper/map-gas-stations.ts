@@ -1,8 +1,25 @@
 import {
+  FuelPlan,
+  GasStation,
+  GetGasStationsResponse,
+} from '../types/gas-station'
+import {
+  FuelPlanDto,
   GasStationDto,
   GetGasStationsResponseDto,
 } from '../types/gas-station.dto'
-import { GasStation, GetGasStationsResponse } from '../types/gas-station'
+
+/**
+ * Maps a single FuelPlanDto from the API to a FuelPlan object.
+ * @param dto The FuelPlanDto object from the API response.
+ * @returns A mapped FuelPlan object.
+ */
+export const mapFuelPlanDtoToFuelPlan = (dto: FuelPlanDto): FuelPlan => {
+  return {
+    routeSectionId: dto.routeSectionId,
+    fuelPlanId: dto.fuelPlanId,
+  }
+}
 
 /**
  * Maps a single GasStationDto from the API to a GasStation object.
@@ -42,12 +59,13 @@ export const mapGasStationDtoToGasStation = (
           : undefined,
     },
     isAlgorithm: dto.isAlgorithm,
-    refill: dto.refill,
+    refill: dto.refill ? dto.refill : '0',
     stopOrder: dto.stopOrder,
 
     nextDistanceKm: dto.nextDistanceKm ? parseFloat(dto.nextDistanceKm) : null,
     roadSectionId: dto.roadSectionId,
     fuelLeftBeforeRefill: dto.currentFuel,
+    fuelPlans: dto.fuelPlans?.map(mapFuelPlanDtoToFuelPlan) || null,
     state: null, // Or undefined
     distanceToLocation: null, // Or undefined
     route: null, // Or undefined

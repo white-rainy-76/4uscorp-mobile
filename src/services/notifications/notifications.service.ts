@@ -12,8 +12,8 @@ Notifications.setNotificationHandler({
 export async function scheduleLocalNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: 'Локальное уведомление! 📬',
-      body: 'Это уведомление отправлено из самого приложения.',
+      title: 'Local notification! 📬',
+      body: 'This notification was sent from the app itself.',
       data: { key: 'value', screen: 'some-screen-id' },
     },
     trigger: null,
@@ -25,25 +25,25 @@ export async function sendPushTokenToServer(token: string) {
     const response = await fetch(
       'https://your-backend.com/api/register-push-token',
       {
-        // ЗАМЕНИТЕ НА АДРЕС ВАШЕГО БЭКЕНДА
+        // REPLACE WITH YOUR BACKEND ADDRESS
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${yourAuthToken}` // Если требуется авторизация
+          // 'Authorization': `Bearer ${yourAuthToken}` // If authorization is required
         },
-        body: JSON.stringify({ pushToken: token, userId: 'some-user-id' }), // Отправляем токен и ID пользователя
+        body: JSON.stringify({ pushToken: token, userId: 'some-user-id' }), // Send token and user ID
       },
     )
     if (!response.ok) {
       console.error(
-        'Ошибка при отправке токена на сервер:',
+        'Error sending token to server:',
         response.status,
         await response.text(),
       )
     } else {
-      console.log('Токен успешно отправлен на сервер.')
+      console.log('Token successfully sent to server.')
     }
   } catch (error) {
-    console.error('Сетевая ошибка при отправке токена на сервер:', error)
+    console.error('Network error sending token to server:', error)
   }
 }

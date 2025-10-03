@@ -1,5 +1,10 @@
 import { z } from 'zod'
 
+export const FuelPlanDtoSchema = z.object({
+  routeSectionId: z.string(),
+  fuelPlanId: z.string(),
+})
+
 export const GasStationDtoSchema = z.object({
   id: z.string(),
   latitude: z.string(),
@@ -15,6 +20,7 @@ export const GasStationDtoSchema = z.object({
   nextDistanceKm: z.string().optional().nullable(), // nextDistanceKm: null
   roadSectionId: z.string(), // roadSectionId: "d3a9ca2f-27d2-47e8-a534-f6062d96c7a2"
   currentFuel: z.number().nullable().optional(), // currentFuel: 0
+  fuelPlans: z.array(FuelPlanDtoSchema).optional().nullable(), // fuelPlans: [...]
 })
 
 export const FinishInfoDtoSchema = z.object({

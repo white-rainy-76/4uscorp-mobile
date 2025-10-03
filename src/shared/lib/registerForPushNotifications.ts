@@ -2,6 +2,7 @@ import Constants from 'expo-constants'
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
+import { setExpoToken } from './storage'
 
 export async function registerForPushNotificationsAsync() {
   if (Platform.OS === 'android') {
@@ -36,6 +37,10 @@ export async function registerForPushNotificationsAsync() {
         })
       ).data
       console.log(pushTokenString)
+
+      // Save expoToken to storage
+      await setExpoToken(pushTokenString)
+
       return pushTokenString
     } catch (e: unknown) {
       throw new Error(`${e}`)

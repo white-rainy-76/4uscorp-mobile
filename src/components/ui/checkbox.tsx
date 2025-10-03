@@ -4,6 +4,7 @@ import { I18nManager, Pressable, type PressableProps, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
 import colors from '@/components/ui/colors'
+import { useTheme } from '@/shared/lib/theme'
 
 import { Text } from './text'
 
@@ -190,6 +191,7 @@ export const Radio = Object.assign(RadioBase, {
 })
 
 export const SwitchIcon = ({ checked = false }: IconProps) => {
+  const { theme } = useTheme()
   const translateX = checked ? THUMB_OFFSET : WIDTH - THUMB_WIDTH - THUMB_OFFSET
 
   const backgroundColor = checked ? colors.primary[300] : colors.charcoal[400]
@@ -210,7 +212,7 @@ export const SwitchIcon = ({ checked = false }: IconProps) => {
           height: THUMB_HEIGHT,
           width: THUMB_WIDTH,
           position: 'absolute',
-          backgroundColor: 'white',
+          backgroundColor: theme.colors.background.secondary,
           borderRadius: 13,
           right: 0,
         }}

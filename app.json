@@ -3,19 +3,24 @@
     "name": "fouruscorp",
     "slug": "fouruscorp",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "fouruscorp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "requireFullScreen": false,
+      "bundleIdentifier": "com.whiterainy.fouruscorp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/adaptive-icon.png"
       },
       "edgeToEdgeEnabled": true,
+      "screenOrientation": "unspecified",
       "package": "com.whiterainy.fouruscorp",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
@@ -35,8 +40,7 @@
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "resizeMode": "contain"
         }
       ],
       [
@@ -46,10 +50,11 @@
         }
       ],
       [
-        "react-native-maps",
+        "@sentry/react-native/expo",
         {
-          "iosGoogleMapsApiKey": "AIzaSyCq9ygETQJ-8eStWqHUa-XvF1ihD32NyDU",
-          "androidGoogleMapsApiKey": "AIzaSyCq9ygETQJ-8eStWqHUa-XvF1ihD32NyDU"
+          "url": "https://sentry.io/",
+          "project": "react-native-4uscorp",
+          "organization": "start-up-t0"
         }
       ]
     ],

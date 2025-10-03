@@ -3,9 +3,10 @@ import {
   useMutation,
   UseMutationOptions,
 } from '@tanstack/react-query'
-import { GetRoutePayload } from './types/route.payload'
 import { RouteData } from './types/route'
-import { GetRoutePayloadSchema } from './payload/route.payload'
+import { GetRoutePayload } from './types/route.payload'
+
+import { getRoutePayloadSchema } from './payload/route.payload'
 import { getRoute } from './route.service'
 
 export function useGetRouteMutation(
@@ -25,7 +26,7 @@ export function useGetRouteMutation(
     mutationKey: ['routes', 'get', ...mutationKey],
 
     mutationFn: async (payload: GetRoutePayload) => {
-      const validatedPayload = GetRoutePayloadSchema.parse(payload)
+      const validatedPayload = getRoutePayloadSchema.parse(payload)
       const controller = new AbortController()
       return getRoute(validatedPayload, controller.signal)
     },
